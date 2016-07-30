@@ -1,6 +1,8 @@
 import json
 DBNAME='monitor'
 HOST = "127.0.0.1"
+DOMAIN = "127.0.0.1:8088"
+PORT = 8088
 # mysql
 MDB = {
 	'host':HOST,
@@ -24,4 +26,7 @@ DB_CNF = {
     'm':{json.dumps(MDB):[DBNAME,]}, # master, other database name
     's':{json.dumps(SDB):[DBNAME,]}, # slave
 }
-SESSION_USER = 'monitor'
+SS_SERVERS = ["127.0.0.1:11000"]
+COOKIE_NAME = 'session_id'
+COOKIE_SECRET= 'FPdaUI5QAGaDdkL5gEmGeJJFuYh7EQnp2XdTP1'
+SESSION_USER = 'monitor_user'

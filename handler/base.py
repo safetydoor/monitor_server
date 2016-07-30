@@ -1,18 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
-import re
-import urllib
-import datetime
-import logging
 import json
-import time
-import base64
-
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 import tornado.web
 from conf.settings import SESSION_USER
-#from model.user import User
+from model.admin import AdminModel
+from lib.jsonencoder import CJsonEncoder
 
 class BaseHandler(tornado.web.RequestHandler):
     @property
@@ -22,8 +18,8 @@ class BaseHandler(tornado.web.RequestHandler):
         return self._session
 
     def send_json(self, res, code, msg='', callback=None):
-        r = {'status':{'code':code,'msg':msg},'result':res}
-        r = json.dumps(r)
+        r = {'code':code,'msg':msg,'result':res}
+        r = json.dumps(r, cls=CJsonEncoder)
         if callback:
             r = '%s(%s);'%(callback,r)
             self.set_header('Content-Type', 'application/json')
@@ -43,7 +39,7 @@ class BaseHandler(tornado.web.RequestHandler):
         module = self.parse_module(module)
         method = getattr(self,module or 'index')
         # if not self.current_user:
-        #     self.redirect('/login')
+        #     self.redirect('/admin/login')
         #     return;
         if method and module not in ('get','post'):
             method()
@@ -54,21 +50,22 @@ class BaseHandler(tornado.web.RequestHandler):
         module = self.parse_module(module)
         method = getattr(self,module or 'index')
         # if not self.current_user:
-        #     self.redirect('/login')
+        #     self.redirect('admin/login')
         #     return;
         if method and module not in ('get','post'):
             method()
         else:
             raise tornado.web.HTTPError(404)
 
-    # def get_current_user(self):
-    #     uInfo = self.session[SESSION_USER];
-    #     if uInfo:
-    #         user = User.mgr().Q().filter(userName=uInfo['userName'])[0]
-    #         if not user:
-    #             self._logout()
-    #     print 'get_current_user:%s'%uInfo
-    #     return uInfo;
+    def get_current_user(self):
+        uInfo = self.session[SESSION_USER];
+        if uInfo:
+            user = AdminModel.mgr().Q().filter(userName=uInfo['userName'])[0]
+            print user
+            if not user:
+                self._logout()
+        print 'get_current_user:%s'%uInfo
+        return uInfo;
 
     def _login(self, userName):
         self.session[SESSION_USER] = {'userName':userName}

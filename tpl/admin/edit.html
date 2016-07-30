@@ -1,0 +1,34 @@
+
+<div class="pageContent" >
+	<form method="post" action="/admin/adminsave" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+        <input type="hidden" name="id" value="{{admin['id']}}" />
+		<div class="pageFormContent" style="padding-left: 20px; height: auto !important; " layoutH="76">
+            <p>
+				<label>用户名：</label>
+				<label>{{admin['userName']}}</label>
+			</p>
+			<p>
+				<label>状态：</label>
+				<select name="state" class="required combox">
+					<option value="0" {%if admin['state'] == 0 %} selected="selected" {%end%} >可用</option>
+					<option value="1" {%if admin['state'] == 1 %} selected="selected" {%end%}>不可用</option>
+				</select>
+			</p>
+			<p>
+				<label>权限：</label>
+				<select name="group" class="required combox">
+					<option value="root" {%if admin['group'] == 'root' %} selected="selected" {%end%} >超级管理员</option>
+					<option value="admin" {%if admin['group'] == 'admin' %} selected="selected" {%end%}>管理员</option>
+				</select>
+			</p>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit" >&nbsp;保&nbsp;&nbsp;存&nbsp;</button></div></div></li>
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">&nbsp;取&nbsp;&nbsp;消&nbsp;</button></div></div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>

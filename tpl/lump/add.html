@@ -1,0 +1,79 @@
+<link href="uploadify/css/uploadify.css" rel="stylesheet" type="text/css" media="screen"/>
+<script src="uploadify/scripts/jquery.uploadify.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+$(function() {
+    $("#file_upload").uploadify({
+        'swf':'uploadify/scripts/uploadify.swf',
+        'uploader':'/admin/upload',
+        'buttonText':'请选择文件',
+        'fileSizeLimit':'400KB',
+        'fileTypeDesc':'*.jpg;*.jpeg;*.gif;*.png;',
+        'fileTypeExts':'*.jpg;*.jpeg;*.gif;*.png;',
+        'auto':true,
+        'onUploadSuccess' : function(file, data, response) {
+            var json = eval("(" + data + ")");
+            $('#iconUrl').val(json.result.url)
+        }
+    });
+});
+
+</script>
+<div class="pageContent">
+    <form method="post" action="/admin/lumpsave" class="pageForm required-validate"
+          onsubmit="return validateCallback(this, dialogAjaxDone);">
+        <div class="pageFormContent" layoutH="56" style="padding-left: 20px; height: auto !important;">
+            <p>
+                <label>
+                    模块名称标题：</label>
+                <input name="name" class="textInput required" type="text"/>
+            </p>
+            <p>
+                <label>
+                    模块描述：</label>
+                <input name="desc" style="width:240px" class="textInput" type="text"/>
+            </p>
+            <p>
+                <label>
+                    模块地址：</label>
+                <input name="url" style="width:240px" class="textInput" type="text"/>
+            </p>
+            <p>
+                <label>分类名称：</label>
+                <select name="categoryId" class="required combox">
+                    {% for category in categorys %}
+                    <option value="{{category['id']}}">{{category['name']}}</option>
+                    {% end %}
+                </select>
+            </p>
+            <p>
+                <label>
+                    模块icon图片：</label>
+                <input id="iconUrl" style="width:240px" name="iconUrl" class="textInput required" type="text"/>
+            </p>
+            <P style="margin-bottom:80px;margin-left:130px">
+                <input id="file_upload" type="file" name="adImage"/>
+            </P>
+        </div>
+        <div class="formBar">
+            <ul>
+                <li>
+                    <div class="buttonActive">
+                        <div class="buttonContent">
+                            <button type="submit">
+                                &nbsp;保&nbsp;&nbsp;存&nbsp;</button>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="button">
+                        <div class="buttonContent">
+                            <button type="button" class="close">
+                                &nbsp;取&nbsp;&nbsp;消&nbsp;</button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,67 @@
+<form id="pagerForm" method="post" action="/admin/adlist">
+	<input type="hidden" name="pageNum" value="1" />
+	<input type="hidden" name="numPerPage" value="{{numPerPage}}" />
+</form>
+
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a class="add" href="/admin/adadd" target="dialog"><span>添加</span></a></li>
+			<li><a title="确实要删除这些记录吗?" target="selectedTodo" rel="ids" postType="string" href="/admin/addelete" class="delete"><span>批量删除</span></a></li>
+		</ul>
+	</div>
+	<table class="table" width="1000" layoutH="138">
+		<thead>
+			<tr>
+				<th><input type="checkbox" group="ids" class="checkboxCtrl"></th>
+				<th>广告标题</th>
+				<th>广告描述</th>
+				<th>广告图片</th>
+				<th>广告地址</th>
+				<th>创建时间</th>
+				<th>状态</th>
+				<th width="60px">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for ad in ads %}
+			<tr target="sid_user" rel="1">
+				<td><input name="ids" value="{{ad['id']}}" type="checkbox"></td>
+				<td>{{ad['name']}}</td>
+				<td>{{ad['desc']}}</td>
+				<td>
+					<a href="{{ad['imageUrl']}}" target="_blank">
+						{{ad['imageUrl']}}
+					</a>
+				</td>
+				<td>
+					<a href="{{ad['adUrl']}}" style="word-break:break-all" target="_blank">
+						{{ad['adUrl']}}
+					</a>
+				</td>
+				<td>{{ad['createTime']}}</td>
+				<td>{% if ad['state'] ==0%}可用{%else%}不可用{%end%}</td>
+				<td>
+					<a title="删除" target="ajaxTodo" href="/admin/addelete?ids={{ad['id']}}" class="btnDel">删除</a>
+					<a title="编辑" target="dialog" href="/admin/adedit?id={{ad['id']}}" class="btnEdit">编辑</a>
+				</td>
+			</tr>
+			{% end %}
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" value="{{numPerPage}}" onchange="navTabPageBreak({numPerPage:this.value})">
+				<option value="20" {% if numPerPage==20 %} selected="selected" {% end %}>20</option>
+				<option value="50" {% if numPerPage==50 %} selected="selected" {% end %}>50</option>
+				<option value="100" {% if numPerPage==100 %} selected="selected" {% end %}>100</option>
+				<option value="200" {% if numPerPage==200 %} selected="selected" {% end %}>200</option>
+			</select>
+			<span>条，共{{totalCount}}条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="{{totalCount}}" numPerPage="{{numPerPage}}" pageNumShown="10" currentPage="{{currentPage}}"></div>
+
+	</div>
+</div>

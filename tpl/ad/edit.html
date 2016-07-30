@@ -1,0 +1,72 @@
+<link href="uploadify/css/uploadify.css" rel="stylesheet" type="text/css" media="screen"/>
+<script src="uploadify/scripts/jquery.uploadify.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+$(function() {
+    $("#file_upload").uploadify({
+        'swf':'uploadify/scripts/uploadify.swf',
+        'uploader':'/admin/upload',
+        'buttonText':'请选择文件',
+        'fileSizeLimit':'400KB',
+        'fileTypeDesc':'*.jpg;*.jpeg;*.gif;*.png;',
+        'fileTypeExts':'*.jpg;*.jpeg;*.gif;*.png;',
+        'auto':true,
+        'onUploadSuccess' : function(file, data, response) {
+            var json = eval("(" + data + ")");
+            $('#imageUrl').val(json.result.url)
+        }
+    });
+});
+
+
+</script>
+<div class="pageContent">
+    <form method="post" action="/admin/adsave" class="pageForm required-validate"
+          onsubmit="return validateCallback(this, dialogAjaxDone);">
+        <input type="hidden" name="id" value="{{ad['id']}}"/>
+        <div class="pageFormContent" layoutH="56" style="padding-left: 20px; height: auto !important; " layoutH="76">
+            <p>
+                <label>
+                    广告标题：</label>
+                <input name="name" style="width:240px" value="{{ad['name']}}" class="textInput required" type="text"/>
+            </p>
+            <p>
+                <label>
+                    广告描述：</label>
+                <input name="desc" style="width:240px" value="{{ad['desc']}}" style="width:240px" class="textInput"
+                       type="text"/>
+            </p>
+            <p>
+                <label>
+                    广告地址：</label>
+                <input name="adUrl" style="width:240px" value="{{ad['adUrl']}}" class="textInput" type="text"/>
+            </p>
+            <p>
+                <label>
+                    广告图片：</label>
+                <input id="imageUrl" style="width:240px" value="{{ad['imageUrl']}}" name="imageUrl" class="textInput required" type="text"/>
+            </p>
+            <P style="margin-bottom:80px;margin-left:130px">
+                <input id="file_upload" type="file" name="adImage"/>
+            </P>
+        </div>
+        <div class="formBar">
+            <ul>
+                <li>
+                    <div class="buttonActive">
+                        <div class="buttonContent">
+                            <button type="submit">&nbsp;保&nbsp;&nbsp;存&nbsp;</button>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="button">
+                        <div class="buttonContent">
+                            <button type="button" class="close">&nbsp;取&nbsp;&nbsp;消&nbsp;</button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </form>
+</div>

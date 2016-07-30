@@ -1,0 +1,32 @@
+
+<div class="pageContent" >
+	<form method="post" action="/admin/livesave" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+        <input type="hidden" name="id" value="{{live['id']}}" />
+		<div class="pageFormContent" style="padding-left: 20px; height: auto !important; " layoutH="76">
+            <p>
+                <label>
+                    直播名称：</label>
+                <input name="name" value="{{live['name']}}" class="textInput required" type="text"/>
+            </p>
+            <p>
+                <label>
+                    模块描述：</label>
+                <input name="desc" value="{{live['desc']}}" style="width:240px" class="textInput" type="text"/>
+            </p>
+            <p>
+                <label>
+                    直播地址：</label>
+                <input name="address" value="{{live['address']}}" class="textInput" type="text"/>
+            </p>
+
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit" >&nbsp;保&nbsp;&nbsp;存&nbsp;</button></div></div></li>
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">&nbsp;取&nbsp;&nbsp;消&nbsp;</button></div></div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>

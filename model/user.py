@@ -15,16 +15,17 @@ class UserModel(Model):
     _db = 'monitor'
     _table = 'monitor_user'
     _pk = 'id'
-    _fields = set(['id','imei','userName','passWord','phoneNumber','createTime','stat'])
+    _fields = set(['id','imei','userName','passWord','phoneNumber','group','createTime','state'])
     _scheme = ("`id` int(11) NOT NULL AUTO_INCREMENT",
                 "`imei` varchar(50) DEFAULT NULL",
                 "`userName` varchar(50) DEFAULT NULL",
                 "`passWord` varchar(50) DEFAULT NULL",
                 "`phoneNumber` varchar(50) DEFAULT NULL",
+                "`group` varchar(50) DEFAULT 'root'",
                 "`createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP",
                 "`state` int(11) DEFAULT '0'",
                 "PRIMARY KEY (`id`)")
 
 if __name__ == "__main__":
-    print UserModel.mgr().Q()
+    print UserModel.new().init_table()
     pass

@@ -1,0 +1,47 @@
+<div class="pageContent">
+    <form method="post" action="/admin/usersave" class="pageForm required-validate"
+          onsubmit="return validateCallback(this, dialogAjaxDone);">
+        <div class="pageFormContent" style="padding-left: 20px; height: auto !important;">
+            <p>
+                <label>
+                    用户名：</label>
+                <input name="userName" class="textInput required" type="text"/>
+            </p>
+            <p>
+                <label>
+                    密码：</label>
+                <input name="passWord" class="textInput required" type="password"/>
+            </p>
+            <p>
+                <label>
+                    IMEI：</label>
+                <input name="imei" class="textInput" type="text"/>
+            </p>
+            <p>
+                <label>
+                    手机号：</label>
+                <input name="phoneNumber" class="textInput" type="text"/>
+            </p>
+        </div>
+        <div class="formBar">
+            <ul>
+                <li>
+                    <div class="buttonActive">
+                        <div class="buttonContent">
+                            <button type="submit">
+                                &nbsp;保&nbsp;&nbsp;存&nbsp;</button>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="button">
+                        <div class="buttonContent">
+                            <button type="button" class="close">
+                                &nbsp;取&nbsp;&nbsp;消&nbsp;</button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,44 @@
+<div class="pageContent">
+    <form method="post" action="/admin/adminsave" class="pageForm required-validate"
+          onsubmit="return validateCallback(this, dialogAjaxDone);">
+        <div class="pageFormContent" style="padding-left: 20px; height: auto !important;">
+            <p>
+                <label>
+                    用户名：</label>
+                <input name="userName" class="textInput required" type="text"/>
+            </p>
+            <p>
+                <label>
+                    密码：</label>
+                <input name="passWord" class="textInput required" type="password"/>
+            </p>
+            <p>
+                <label>权限：</label>
+                <select name="group" class="required combox">
+                    <option value="root">超级管理员</option>
+                    <option value="admin">管理员</option>
+                </select>
+            </p>
+        </div>
+        <div class="formBar">
+            <ul>
+                <li>
+                    <div class="buttonActive">
+                        <div class="buttonContent">
+                            <button type="submit">
+                                &nbsp;保&nbsp;&nbsp;存&nbsp;</button>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="button">
+                        <div class="buttonContent">
+                            <button type="button" class="close">
+                                &nbsp;取&nbsp;&nbsp;消&nbsp;</button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </form>
+</div>
