@@ -12,7 +12,6 @@ from model.ad import AdModel
 from model.category import LumpCategoryModel
 from model.lump import LumpModel
 from model.live import LiveModel
-from conf.settings import DOMAIN
 
 class AdminHandler(BaseHandler):
     def get(self, module):
@@ -244,7 +243,7 @@ class AdminHandler(BaseHandler):
         # 列表中每页显示多少条，默认每页显示20条
         numPerPage = int(self.get_argument('numPerPage', 20))
         # 计算User的总数
-        all = LumpCategoryModel.mgr().Q()
+        all = LumpCategoryModel.mgr().Q().orderby('sort', 'desc')
         totalCount = len(all)
         categorys = all[(currentPage - 1) * numPerPage: currentPage * numPerPage]
         self.render('category/list.html',
@@ -278,11 +277,13 @@ class AdminHandler(BaseHandler):
         id = self.get_argument('id', '')
         name = self.get_argument('name', '')
         desc = self.get_argument('desc', '')
+        sort = self.get_argument('sort', '0')
         category = LumpCategoryModel.new()
         if id != '':
             category.id = id
         category.name = name
         category.desc = desc
+        category.sort = sort
         category.save()
         self.write(json.dumps({'statusCode': "200",
                                'callbackType': "closeCurrent",
@@ -297,7 +298,7 @@ class AdminHandler(BaseHandler):
         # 列表中每页显示多少条，默认每页显示20条
         numPerPage = int(self.get_argument('numPerPage', 20))
         # 计算User的总数
-        all = LumpModel.mgr().Q()
+        all = LumpModel.mgr().Q().orderby('sort', 'desc')
         totalCount = len(all)
         lumps = all[(currentPage - 1) * numPerPage: currentPage * numPerPage]
         categorys = LumpCategoryModel.mgr().Q()
@@ -343,7 +344,7 @@ class AdminHandler(BaseHandler):
         iconUrl = self.get_argument('iconUrl', '')
         url = self.get_argument('url', '')
         categoryId = self.get_argument('categoryId', '0')
-
+        sort = self.get_argument('sort', '0')
         lump = LumpModel.new()
         if id != '':
             lump.id = id
@@ -352,6 +353,7 @@ class AdminHandler(BaseHandler):
         lump.iconUrl = iconUrl
         lump.url = url
         lump.categoryId = categoryId
+        lump.sort = sort
         lump.save()
         self.write(json.dumps({'statusCode': "200",
                                'callbackType': "closeCurrent",
@@ -366,7 +368,7 @@ class AdminHandler(BaseHandler):
         # 列表中每页显示多少条，默认每页显示20条
         numPerPage = int(self.get_argument('numPerPage', 20))
         # 计算User的总数
-        all = LiveModel.mgr().Q()
+        all = LiveModel.mgr().Q().orderby('sort', 'desc')
         totalCount = len(all)
         lives = all[(currentPage - 1) * numPerPage: currentPage * numPerPage]
         self.render('live/list.html',
@@ -401,12 +403,14 @@ class AdminHandler(BaseHandler):
         name = self.get_argument('name', '')
         desc = self.get_argument('desc', '')
         address = self.get_argument('address', '')
+        sort = self.get_argument('sort', '0')
         live = LiveModel.new()
         if id != '':
             live.id = id
         live.name = name
         live.desc = desc
         live.address = address
+        live.sort = sort
         live.save()
         self.write(json.dumps({'statusCode': "200",
                                'callbackType': "closeCurrent",
@@ -426,7 +430,7 @@ class AdminHandler(BaseHandler):
         with open(filepath, 'wb') as up:
             up.write(meta['body'])
 
-        url = 'http://%s/static/images/%s' % (DOMAIN, filename)
+        url = '/static/images/%s' % filename
         self.send_json({'url': url}, 0, '成功');
 
     def md5(self, str):

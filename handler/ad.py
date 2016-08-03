@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 __author__ = 'laps'
-from handler.base import BaseHandler
+
 import json
 from model.ad import AdModel
 from lib.jsonencoder import CJsonEncoder
-
+from handler.base import BaseHandler
+from conf.settings import SERVER_ADDRESS
 
 class AdHandler(BaseHandler):
     def list(self):
@@ -15,14 +16,13 @@ class AdHandler(BaseHandler):
             page = 0
         if size <= 0:
             size = 10
-        sql = 'select * from monitor_ad limit %d,%d' % (page * size, size);
+        sql = 'select `id`,`name`,`imageUrl`,`adUrl` from monitor_ad limit %d,%d' % (page * size, size);
         ads = AdModel.mgr().raw(sql)
-        res = {}
-        res['result'] = ads
-        res['code'] = 0
-        res['msg'] = '成功'
-        jsondata = json.dumps(res, cls=CJsonEncoder)
-        self.write(jsondata)
+        for ad in ads:
+            imageUrl = ad['imageUrl']
+            if imageUrl.startswith('/static/images/'):
+                ad['imageUrl'] = SERVER_ADDRESS + imageUrl
+        self.send_json(ads, 0 ,'成功')
 
     def add(self):
         aid = self.get_argument('id', '')

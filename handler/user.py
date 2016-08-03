@@ -20,7 +20,7 @@ class UserHandler(BaseHandler):
         users = UserModel.mgr().raw(sql)
         self.send_json(users, 0 , '成功')
 
-    def add(self):
+    def save(self):
         uid = self.get_argument('id', '')
         imei = self.get_argument('imei', '')
         userName = self.get_argument('userName', '').encode('utf-8')
@@ -57,7 +57,7 @@ class UserHandler(BaseHandler):
             self.send_json({}, 1, '用户名或密码错误,登陆失败')
 
     def edit(self):
-        self.add();
+        self.save()
 
 
 if __name__ == "__main__":

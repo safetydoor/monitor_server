@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 __author__ = 'laps'
-from handler.base import BaseHandler
+
 import json
+from handler.base import BaseHandler
 from model.lump import LumpModel
 from lib.jsonencoder import CJsonEncoder
-
+from conf.settings import SERVER_ADDRESS
 
 class LumpHandler(BaseHandler):
     def list(self):
@@ -15,8 +16,12 @@ class LumpHandler(BaseHandler):
             page = 0
         if size <= 0:
             size = 10
-        sql = 'select * from monitor_lump limit %d,%d' % (page * size, size);
+        sql = 'select * from monitor_lump order by sort desc limit %d,%d' % (page * size, size);
         lumps = LumpModel.mgr().raw(sql)
+        for lump in lumps:
+            iconUrl = lump['iconUrl']
+            if iconUrl.startswith('/static/images/'):
+                lump['iconUrl'] = SERVER_ADDRESS + iconUrl
         res = {}
         res['result'] = lumps
         res['code'] = 0
@@ -31,6 +36,7 @@ class LumpHandler(BaseHandler):
         iconUrl = self.get_argument('iconUrl', '').encode('utf-8')
         url = self.get_argument('url', '').encode('utf-8')
         categoryId = self.get_argument('categoryId', '0')
+        sort = self.get_argument('sort', '0')
         state = self.get_argument('state', '0')
 
         lump = LumpModel.new()
@@ -41,6 +47,7 @@ class LumpHandler(BaseHandler):
         lump.iconUrl = iconUrl
         lump.url = url
         lump.categoryId = categoryId
+        lump.sort = sort;
         lump.state = state
         resLump = lump.save()
         res = dict()

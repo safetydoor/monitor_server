@@ -1,11 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 __author__ = 'laps'
-from handler.base import BaseHandler
-import json
-from model.category import LumpCategoryModel
-from lib.jsonencoder import CJsonEncoder
 
+import json
+from handler.base import BaseHandler
+from model.category import LumpCategoryModel
+from model.lump import LumpModel
+from lib.jsonencoder import CJsonEncoder
+from conf.settings import SERVER_ADDRESS
 
 class CategoryHandler(BaseHandler):
     def list(self):
@@ -15,25 +17,31 @@ class CategoryHandler(BaseHandler):
             page = 0
         if size == 0:
             size = 10
-        sql = 'select * from monitor_lumpCategory limit %d,%d' % (page * size, size);
+        sql = 'select `id`,`name` from monitor_lumpCategory order by sort desc limit %d,%d' % (page * size, size);
         categorys = LumpCategoryModel.mgr().raw(sql)
-        res = {}
-        res['result'] = categorys
-        res['code'] = 0
-        res['msg'] = '成功'
-        jsondata = json.dumps(res, cls=CJsonEncoder)
-        self.write(jsondata)
+        for category in categorys:
+            lumpsql = 'select `id`,`name`,`desc`,`iconUrl`,`url` from monitor_lump where categoryId=%d order by sort desc' % category['id']
+            lumps = LumpModel.mgr().raw(lumpsql)
+            for lump in lumps:
+                iconUrl = lump['iconUrl']
+                if iconUrl.startswith('/static/images/'):
+                    lump['iconUrl'] = SERVER_ADDRESS + iconUrl
+            category['lumps'] = lumps
+        print categorys
+        self.send_json(categorys, 0, '成功')
 
     def add(self):
         cid = self.get_argument('id', '')
         name = self.get_argument('name', '').encode('utf-8')
         desc = self.get_argument('desc', '').encode('utf-8')
+        sort = int(self.get_argument('sort', '0'))
         state = self.get_argument('state', '0')
         category = LumpCategoryModel.new()
         if cid != '':
             category.id = cid
         category.name = name
         category.desc = desc
+        category.sort = sort
         category.state = state
         resCat = category.save()
         res = dict()
@@ -65,6 +73,8 @@ if __name__ == "__main__":
     u = '便民服务'
     category.name = u
     category.desc = u
-    res = category.save()
-    print res
+    if isinstance(u, object):
+        print 'xxxx'
+    # res = category.save()
+    # print res
     pass

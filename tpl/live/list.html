@@ -17,6 +17,7 @@
 				<th width="70">直播名称</th>
 				<th width="70">直播描述</th>
 				<th width="70">直播地址</th>
+				<th width="22">排序值</th>
 				<th width="70">创建时间</th>
 				<th width="30">操作</th>
 			</tr>
@@ -32,6 +33,7 @@
 						{{live['address']}}
 					</a>
 				</td>
+				<td>{{live['sort']}}</td>
 				<td>{{live['createTime']}}</td>
 				<td>
 					<a title="删除" target="ajaxTodo" href="/admin/livedelete?ids={{live['id']}}" class="btnDel">删除</a>

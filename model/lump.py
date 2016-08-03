@@ -15,17 +15,21 @@ class LumpModel(Model):
     _db = 'monitor'
     _table = 'monitor_lump'
     _pk = 'id'
-    _fields = set(['id','name','desc','iconUrl','url', 'categoryId','createTime','state'])
+    _fields = set(['id', 'name', 'desc', 'iconUrl', 'url', 'categoryId', 'sort', 'createTime', 'state'])
     _scheme = ("`id` int(11) NOT NULL AUTO_INCREMENT",
                 "`name` varchar(50) DEFAULT NULL",
-                "`desc` varchar(50) DEFAULT NULL",
-                "`iconUrl` varchar(150) DEFAULT NULL",
-                "`url` varchar(150) DEFAULT NULL",
+                "`desc` varchar(300) DEFAULT NULL",
+                "`iconUrl` varchar(300) DEFAULT NULL",
+                "`url` varchar(300) DEFAULT NULL",
                 "`categoryId` int(11) DEFAULT '0'",
+                "`sort` int(11) DEFAULT '0'",
                 "`createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP",
                 "`state` int(11) DEFAULT '0'",
                 "PRIMARY KEY (`id`)")
 
 if __name__ == "__main__":
-    print LumpModel.new().init_table()
+    lumps = LumpModel.mgr().Q()
+    for lump in lumps:
+        lump['iconUrl'] = lump['iconUrl'].replace('http://127.0.0.1:8088', '')
+        lump.save()
     pass

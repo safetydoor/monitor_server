@@ -11,9 +11,9 @@ import tornado.ioloop
 import tornado.options
 import tornado.web
 from tornado.options import define, options
-from conf.settings import COOKIE_NAME,COOKIE_SECRET,PORT
+from conf.settings import COOKIE_NAME,COOKIE_SECRET,SERVER_PORT
 
-define("port", default=PORT, help="run on this port", type=int)
+define("port", default=SERVER_PORT, help="run on this port", type=int)
 define("debug", default=True, help="enable debug mode")
 define("online", default=False, help="enable online mode")
 define("project_path", default=sys.path[0], help="deploy_path" )

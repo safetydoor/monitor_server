@@ -19,6 +19,7 @@
 				<th>模块icon图片</th>
 				<th>模块地址</th>
 				<th>分类名称</th>
+				<th>排序值</th>
 				<th>创建时间</th>
 				<th width="60px">操作</th>
 			</tr>
@@ -46,6 +47,7 @@
 					{% end %}
 					{% end%}
 				</td>
+				<td>{{lump['sort']}}</td>
 				<td>{{lump['createTime']}}</td>
 				<td>
 					<a title="删除" target="ajaxTodo" href="/admin/lumpdelete?ids={{lump['id']}}" class="btnDel">删除</a>

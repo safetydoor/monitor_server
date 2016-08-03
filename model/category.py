@@ -15,10 +15,11 @@ class LumpCategoryModel(Model):
     _db = 'monitor'
     _table = 'monitor_lumpCategory'
     _pk = 'id'
-    _fields = set(['id', 'name', 'desc', 'createTime','state'])
+    _fields = set(['id', 'name', 'desc', 'sort', 'createTime','state'])
     _scheme = ("`id` int(11) NOT NULL AUTO_INCREMENT",
                 "`name` varchar(50) DEFAULT NULL",
-                "`desc` varchar(50) DEFAULT NULL",
+                "`desc` varchar(300) DEFAULT NULL",
+                "`sort` int(11) DEFAULT '0'",
                 "`createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP",
                 "`state` int(11) DEFAULT '0'",
                 "PRIMARY KEY (`id`)")

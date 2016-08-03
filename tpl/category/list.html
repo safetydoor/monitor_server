@@ -16,6 +16,7 @@
 				<th width="22"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
 				<th width="70">模块分类名</th>
 				<th width="70">简介</th>
+				<th width="22">排序值</th>
 				<th width="70">创建时间</th>
 				<th width="30">操作</th>
 			</tr>
@@ -26,6 +27,7 @@
 				<td><input name="ids" value="{{category['id']}}" type="checkbox"></td>
 				<td>{{category['name']}}</td>
 				<td>{{category['desc']}}</td>
+				<td>{{category['sort']}}</td>
 				<td>{{category['createTime']}}</td>
 				<td>
 					<a title="删除" target="ajaxTodo" href="/admin/categorydelete?ids={{category['id']}}" class="btnDel">删除</a>

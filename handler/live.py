@@ -6,23 +6,17 @@ import json
 from model.live import LiveModel
 from lib.jsonencoder import CJsonEncoder
 
-
 class LiveHandler(BaseHandler):
     def list(self):
-        size = int(self.get_argument('size', '10'))
+        size = int(self.get_argument('size', '20'))
         page = int(self.get_argument('page', '0'))
         if page < 0:
             page = 0
         if size <= 0:
             size = 10
-        sql = 'select * from monitor_live limit %d,%d' % (page * size, size);
+        sql = 'select id,name,address from monitor_live order by sort desc limit %d,%d' % (page * size, size);
         lives = LiveModel.mgr().raw(sql)
-        res = {}
-        res['result'] = lives
-        res['code'] = 0
-        res['msg'] = '成功'
-        jsondata = json.dumps(res, cls=CJsonEncoder)
-        self.write(jsondata)
+        self.send_json(lives, 0, '成功')
 
     def add(self):
         lid = self.get_argument('id', '')
@@ -30,6 +24,7 @@ class LiveHandler(BaseHandler):
         desc = self.get_argument('desc', '').encode('utf-8')
         iconUrl = self.get_argument('iconUrl', '').encode('utf-8')
         address = self.get_argument('address', '').encode('utf-8')
+        sort = self.get_argument('sort', '0')
         state = self.get_argument('state', '0')
 
         live = LiveModel.new()
@@ -39,6 +34,7 @@ class LiveHandler(BaseHandler):
         live.desc = desc
         live.iconUrl = iconUrl
         live.address = address
+        live.sort = sort
         live.state = state
         resLive = live.save()
         res = dict()
@@ -66,13 +62,8 @@ class LiveHandler(BaseHandler):
 
 
 if __name__ == "__main__":
-    for i in range(0, 50):
-        live = LiveModel.new()
-        u = '%d%d%d%d' % (i, i, i, i)
-        live.name = u
-        live.desc = u
-        live.imageUrl = u
-        live.address = u
-        res = live.save()
-        print res
+    lives = LiveModel.mgr().Q()
+    for live in lives:
+        live['iconUrl'] = ''
+        live.save()
     pass

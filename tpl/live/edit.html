@@ -10,15 +10,19 @@
             </p>
             <p>
                 <label>
-                    模块描述：</label>
+                    直播描述：</label>
                 <input name="desc" value="{{live['desc']}}" style="width:240px" class="textInput" type="text"/>
             </p>
             <p>
                 <label>
                     直播地址：</label>
-                <input name="address" value="{{live['address']}}" class="textInput" type="text"/>
+                <input name="address" value="{{live['address']}}" class="textInput required" type="text"/>
             </p>
-
+            <p>
+                <label>
+                    排序值：</label>
+                <input name="sort" value="{{live['sort']}}" class="digits" type="text"/>
+            </p>
 		</div>
 		<div class="formBar">
 			<ul>
