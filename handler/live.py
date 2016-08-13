@@ -13,8 +13,9 @@ class LiveHandler(BaseHandler):
         if page < 0:
             page = 0
         if size <= 0:
-            size = 10
+            size = 20
         sql = 'select id,name,address from monitor_live order by sort desc limit %d,%d' % (page * size, size);
+        #limit %d,%d' % (page * size, size);
         lives = LiveModel.mgr().raw(sql)
         self.send_json(lives, 0, '成功')
 

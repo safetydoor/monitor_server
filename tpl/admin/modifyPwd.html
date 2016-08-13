@@ -1,23 +1,27 @@
 <div class="pageContent">
-    <form method="post" action="/admin/adminsave" class="pageForm required-validate"
+    <form method="post" action="/admin/adminpwd" class="pageForm required-validate"
           onsubmit="return validateCallback(this, dialogAjaxDone);">
+         <input type="hidden" name="id" value="{{admin['id']}}" />
         <div class="pageFormContent" style="padding-left: 20px; height: auto !important;">
             <p>
                 <label>
                     用户名：</label>
-                <input name="userName" class="textInput required" type="text"/>
+                <label>{{admin['userName']}}</label>
             </p>
             <p>
                 <label>
-                    密码：</label>
-                <input name="passWord" class="textInput required" minlength="6" maxlength="20" type="password"/>
+                    旧密码：</label>
+                <input name="oldPassWord" class="textInput required" minlength="6" maxlength="20" type="password"/>
             </p>
             <p>
-                <label>权限：</label>
-                <select name="group" class="required combox">
-                    <option value="root">超级管理员</option>
-                    <option value="admin">管理员</option>
-                </select>
+                <label>
+                    新密码：</label>
+                <input name="newPassWord" id="newPassWord" class="textInput required" minlength="6" maxlength="20" type="password"/>
+            </p>
+            <p>
+                <label>
+                    确认新密码：</label>
+                <input name="reNewPassWord" equalto="#newPassWord" class="textInput required" minlength="6" maxlength="20" type="password"/>
             </p>
         </div>
         <div class="formBar">

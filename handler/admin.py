@@ -13,6 +13,7 @@ from model.category import LumpCategoryModel
 from model.lump import LumpModel
 from model.live import LiveModel
 
+
 class AdminHandler(BaseHandler):
     def get(self, module):
         print 'admin get:%s' % module
@@ -59,6 +60,11 @@ class AdminHandler(BaseHandler):
         else:
             self.send_json({}, 1, '用户名或密码错误,登陆失败')
 
+    def modifypwd(self):
+        id = self.get_argument('id', '0')
+        admin = AdminModel.mgr().Q().filter(id=id)[0];
+        self.render('admin/modifypwd.html',
+                admin=admin);
     #################### admin ####################
 
     def adminlist(self):
@@ -109,13 +115,20 @@ class AdminHandler(BaseHandler):
 
     def adminpwd(self):
         id = self.get_argument('id', '')
-        passWord = self.get_argument('passWord', '')
-        admin = AdminModel.new()
-        admin.id = id
-        admin.passWord = self.md5(passWord);
-        admin.save()
-        self._logout()
-        self.redirect('/admin/login')
+        oldPassWord = self.get_argument('oldPassWord', '')
+        newPassWord = self.get_argument('newPassWord', '')
+        admins = AdminModel.mgr().Q().filter(id=id)
+        admin = admins[0];
+        if admin.passWord == self.md5(oldPassWord):
+            admin.passWord = self.md5(newPassWord)
+            admin.save()
+            self.write(json.dumps({'statusCode': "200",
+                                   'message': '修改成功',
+                                   'callbackType': "closeCurrent",}))
+        else:
+            self.write(json.dumps({'statusCode': "300",
+                                   'message': '旧密码错误',
+                                   'callbackType': "closeCurrent"}))
 
     def admindelete(self):
         ids = str(self.get_argument('ids')).split(",")
@@ -425,7 +438,7 @@ class AdminHandler(BaseHandler):
         print self.request.files
         file_metas = self.request.files['Filedata']
         meta = file_metas[0]
-        filename = '%d.png' % int(time.time()*100)
+        filename = '%d.png' % int(time.time() * 100)
         filepath = os.path.join(upload_path, filename)
         with open(filepath, 'wb') as up:
             up.write(meta['body'])
@@ -441,7 +454,7 @@ class AdminHandler(BaseHandler):
 
 if __name__ == '__main__':
     print os.path.join(os.path.dirname(__file__), '../static/images')
-    print int(time.time()*100)
+    print int(time.time() * 100)
     # sql = "select * from monitor_user where userName like '%%%%%s%%%%'" % '1111'
     # print sql
     # print UserModel.mgr().raw(sql)

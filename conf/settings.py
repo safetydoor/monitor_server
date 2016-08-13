@@ -2,12 +2,11 @@ import json
 import socket
 hostName = socket.getfqdn(socket.gethostname())
 ipAddress = socket.gethostbyname(hostName)
-
 DB_NAME='monitor'
 DB_HOST = "127.0.0.1"
 
 SERVER_PORT = 8088
-SERVER_ADDRESS = 'http://%s:8088' % ipAddress
+SERVER_ADDRESS = 'http://www.tcyxk.com'#'http://%s:8088' % '10.180.186.34'
 
 # mysql
 MDB = {
